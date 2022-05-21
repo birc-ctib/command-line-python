@@ -107,11 +107,67 @@ flags, args = split_args(sys.argv[1:])
 
 and you can check if the user provided `-n` with `'-n' in flags` and similarly for `-s`.
 
-If you use the `-s` flag to set the `sep` variable to either `''` or `' '` and the `-n` flag to set the `end` variable to either `''` or `'\n'`, then this call to `print()` should give you the desired behaviour.
+**Exercise:** If you use the `-s` flag to set the `sep` variable to either `''` or `' '` and the `-n` flag to set the `end` variable to either `''` or `'\n'`, then this call to `print()` should give you the desired behaviour.
 
 ```python
 print(sep.join(args), end=end)
 ```
 
 The `echo` command can take both flags in one with `-ns`, but our code cannot. That require a bit more spohistication in parsing, and I won't bother with it here. In any case, there are great modules for handing this and in practise you are better off using those. We will see my favorite in a few weeks.
+
+## ed
+
+For our next excercise we will implement our own editor! That sounds scary, but don't fret, we are going to implement `ed`.
+
+```sh
+$ python3 src/ed.py
+
+?
+help
+?
+?
+?
+quit
+?
+exit
+?
+bye
+?
+hello?
+?
+```
+
+If you have the actual `ed` on your machine, you can check that this is not made-up behavoiur; this is how it works.
+
+```sh
+$ ed
+
+?
+help
+?
+?
+?
+quit
+?
+exit
+?
+bye
+?
+hello?
+?
+```
+
+(it will be easier to get out of our Python implementation than the real thing, though).
+
+[The `ed` editor](https://www.gnu.org/fun/jokes/ed-msg.en.html) is one of the oldest interactive source code editors, and has personality, to put it mildly. A rather unpleasant personality. And most people's only experience with `ed` is trying to get it to do *anything* besides printing `?` for every line you give it. If we write a program that does that, we should be able to fool 99% of users into thinking they are running the real `ed`.
+
+To achieve this, we need two things: we need to be able to read a line from the standard input, and we need to print `?` to the standard output. And we need to do this forever. That's it. That is why `ed` has such a small memory footprint.
+
+We already know how to make an infinite loop with `while True:` and we already know how to write to standard output with `print()` so all we need to figure out is how to read a line from standard input. The good people who wrote Python chose the name for that function well, it is `input()`.
+
+When you call `input()` it will wait until it can get a line from standard input--if that is a file it can get it right away, but otherwise it needs to wait for the user to type it--and then it will return the input sans the newline.
+
+**Exercise:** Try to implement `src/ed.py` using a `while True:` loop that waits for input with `input()`, ignores the actual input, and prints `?`.
+
+**Exercise:** Although it hardly seems possible, maybe we can improve on `ed`. Change your code such that if the user types `please get me out of here`, the loop terminates (you can use `break` to make the suffering end).
 
