@@ -169,5 +169,97 @@ When you call `input()` it will wait until it can get a line from standard input
 
 **Exercise:** Try to implement `src/ed.py` using a `while True:` loop that waits for input with `input()`, ignores the actual input, and prints `?`.
 
-**Exercise:** Although it hardly seems possible, maybe we can improve on `ed`. Change your code such that if the user types `please get me out of here`, the loop terminates (you can use `break` to make the suffering end).
+**Exercise:** Although it hardly seems possible, maybe we can improve on `ed`. Change your code such that if the user types `eat flaming death`, the loop terminates (you can use `break` to make the suffering end).
 
+## cat
+
+The `cat` command concatenates a number of files and prints them to standard output. We are going to implement that now. First, let's make a very simple version:
+
+```python
+import sys
+
+for line in sys.stdin:
+    print(line)
+```
+
+In the `for` loop here, we run through `sys.stdin`. What is that doing? Well, for any file, if you try to loop through it, you get each line in turn. The standard input pipe/file is found in `sys.stdin` and the `for` loop runs through each line in it, and we print it.
+
+If you run this code, catting itself, it doesn't look quite right:
+
+```sh
+$ cat src/cat.py | python3 src/cat.py
+import sys
+
+
+
+for line in sys.stdin:
+
+    print(line)
+
+```
+
+There is an extra newline in the output for each line in the input. That is because the `line` you get in the loop contains the newline character for that line, `'\n'`. When we used `input()` we didn't get it, but the `input()` function is more intended for interactive use and this is the general way you run through files, and here the newline character remains.
+
+**Exercise:** If the line already has a newline, `print()` shouldn't add it. Remove it the way you did in the `echo` exercise.
+
+If you are wondering, the standard output file is also found in `sys` and is called `sys.stdout`. We don't need it here, because `print()` uses it by default, but we could make it explicit with `print(line, file=sys.stdout)`.
+
+The real `cat` only reads from `stdin` if we don't provide any arguments. If it gets arguments, it considers them a list of files to open and print in turn. Here's a simple program that does that:
+
+```python
+import sys
+
+args = sys.argv[1:]  # get all command line arguments
+if args:  # if args is not empty
+    for fname in args:
+        with open(fname) as f:
+            print(f.read(), end='')
+else:
+    print(sys.stdin.read(), end='')
+```
+
+Here, we use the `.read()` method on files or `stdin`; it reads the entire content of a file, and we print that. This is not space efficient, though, because we read the entire content of the file in before we print it.
+
+**Exercise:** Change this code so we read and print a line at a time.
+
+The special case of some files or none can be made a little nicer on a UNIX system, where we can just add the file name for `stdin` to the arguments if the argument list is empty
+
+```python
+args = sys.argv[1:]
+if not args:
+    args.append('/dev/stdin')
+
+for arg in args:
+    with open(arg) as f:
+        print(f.read(), sep='')
+```
+
+This works because UNIX knows that the `/dev/stdin` file isn't a real file but one that refers to the standard input. That being said, though, modules that can handle options for you will typically take care of special cases such as this when you need them to.
+
+The real `cat` command has an option, `-n`, that you can use to add line numbers to the output.
+
+```sh
+$ cat -n src/echo.py
+     1	import sys
+     2
+     3	print(' '.join(sys.argv))
+$ cat -n src/cat.py
+     1	import sys
+     2
+     3	for line in sys.stdin:
+     4	    print(line)
+$ cat -n src/echo.py src/cat.py
+     1	import sys
+     2
+     3	print(' '.join(sys.argv))
+     1	import sys
+     2
+     3	for line in sys.stdin:
+     4	    print(line)
+```
+
+**Exercise:** Can you add this option? Don't worry about making it look nice or anything, just print the line number in front of each line.
+
+**Exercise:** As you can see in the examples above, the line numbers go back to 1 each time you start a new file. Can you add another option that makes the line numbers go from 1 and upwards, *not* resetting at each new file?
+
+**Exercise:** Assuming we can't do that (but we can!), could you use `cat` itself to get consequtive numbers? Maybe pipe the result of one cat through another...?
