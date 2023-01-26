@@ -1,5 +1,6 @@
 # Working with the command line from Python
 
+
 It might be too ambitious a title, but this exercise concerns the basics of writing Python programs that play well with other command line tools.
 
 As we saw first week, there are basically three components to communicating with a command line program: the arguments we give a command, the standard input pipe and the standard output pipe. There is, of course, more options--for example, a command can read data from a file where it receives the file name as an argument, it has a standard error pipe to write error messages to, and there are so-called "environment variables" that it might also use, and even more than this--but these are the basic ones that most tools use. We will write a few programs that use these, and in later projects you will explore it in more details.
