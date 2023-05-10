@@ -58,7 +58,7 @@ So, `sys.argv` has the list of arguments and `print()` will print to standard ou
 
 So that is what `print(' '.join(sys.argv))` is doing--it takes all the strings in `sys.argv`, concatenates them with a space between them, and then prints the result (to the standard output).
 
-The problem is the first element in the list, `src/echo.py`. That is not an argument we give the command but the name of the Python script itself. In general, what commands get as arguments is a list of arguments but the first one, the argument at index zero, `sys.argv[0]`, is the name of the program itself. I don't know why the UNIX people decided to make it that way (but it has its usage in very rare cases), but it is what it is.
+The problem is the first element in the list, `src/echo.py`. That is not an argument we give the command but the name of the Python script itself. In general, what commands get as arguments is a list of arguments but the first one, the argument at index zero, `sys.argv[0]`, is the name of the program itself.
 
 **Exercise:** To make a proper `echo` command, remove the first element of the `sys.argv` and print the rest.
 
@@ -77,7 +77,7 @@ foobar
 bazqux
 ```
 
-(the `;` enables me to put multiple commands on the same line, so they are executed in order, and I just used it here so you could actually see that we didn't get a newline after `foo` and `baz`, where we used `-n`).
+(the `;` enables me to put multiple commands on the same line, so they are executed in order, and it was just used here so you could actually see that we didn't get a newline after `foo` and `baz`, where we used `-n`).
 
 There are sophisticated modules for parsing command line arguments for you, and we will see one in later projects, but it isn't hard to do ourselves. Here is a simple function that will split arguments that start with a `-` from those that do not:
 
@@ -114,7 +114,7 @@ and you can check if the user provided `-n` with `'-n' in flags` and similarly f
 print(sep.join(args), end=end)
 ```
 
-The `echo` command can take both flags in one with `-ns`, but our code cannot. That require a bit more spohistication in parsing, and I won't bother with it here. In any case, there are great modules for handing this and in practise you are better off using those. We will see my favorite in a few weeks.
+The `echo` command can take both flags in one with `-ns`, but our code cannot. That require a bit more spohistication in parsing, and we won't bother with it here. In any case, there are great modules for handing this and in practise you are better off using those. We will see my favorite in a few weeks.
 
 ## ed
 
